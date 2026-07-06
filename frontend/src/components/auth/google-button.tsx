@@ -1,5 +1,7 @@
 'use client';
 
+const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://10.0.0.4:5050';
+
 function GoogleIcon() {
   return (
     <svg viewBox="0 0 48 48" className="h-4 w-4" xmlns="http://www.w3.org/2000/svg">
@@ -25,7 +27,7 @@ function GoogleIcon() {
 
 export function GoogleButton({ label }: { label: string }) {
   const handleClick = () => {
-    window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/google`;
+    window.location.href = `${API_BASE}/auth/google`;
   };
 
   return (

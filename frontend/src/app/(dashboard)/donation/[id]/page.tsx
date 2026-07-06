@@ -24,6 +24,7 @@ import { useToastHandler } from '@/hooks/use-toast-handler';
 import { Loader2, MapPin, HeartHandshake, Upload } from 'lucide-react';
 
 const STATUS_ORDER: DonationStatus[] = ['PENDING', 'APPROVED', 'RECEIVED', 'IN_DELIVERY', 'DONATED'];
+const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://10.0.0.4:5050';
 
 export default function DonationDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -67,7 +68,7 @@ export default function DonationDetailPage() {
   const deliveryImageUrl = donation.deliveryImageUrl
     ? donation.deliveryImageUrl.startsWith('http')
       ? donation.deliveryImageUrl
-      : `${process.env.NEXT_PUBLIC_API_URL}${donation.deliveryImageUrl}`
+      : `${API_BASE}${donation.deliveryImageUrl}`
     : '';
 
   const onUploadImage = async () => {

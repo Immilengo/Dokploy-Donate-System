@@ -47,3 +47,4 @@ npm run dev
 
 - O GitHub passa a exibir este arquivo na raiz como documentação principal.
 - Os READMEs de `backend` e `frontend` ajudam a navegar pelas pastas do projeto.
+- O único ficheiro de referência de variáveis de ambiente deve ser o [.env.example](./.env.example) na raiz.

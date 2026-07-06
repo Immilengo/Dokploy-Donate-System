@@ -1,6 +1,6 @@
 import { env } from '@config/env';
 
-const BASE = `http://localhost:${env.PORT}`;
+const BASE = env.BACKEND_PUBLIC_URL;
 
 export const verificationEmailTemplate = (fullName: string, token: string) => ({
   subject: 'Fundação Hubble — Verifica o teu email',

@@ -10,6 +10,6 @@ COPY prisma.config.ts ./
 COPY src ./src
 RUN npm run prisma:generate && npm run build
 
-EXPOSE 3001
+EXPOSE 5050
 
 CMD ["sh", "-c", "npx prisma migrate deploy && node dist/server.js"]

@@ -16,7 +16,7 @@ const server = app.listen(env.PORT, async () => {
     });
   }
 
-  logger.info({ message: `Swagger: http://localhost:${env.PORT}/docs` });
+  logger.info({ message: `Swagger: ${env.BACKEND_PUBLIC_URL}/docs` });
 });
 
 process.on('SIGINT', async () => {

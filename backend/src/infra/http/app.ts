@@ -17,7 +17,7 @@ const swaggerSpec = swaggerJsdoc({
       version: '1.0.0',
       description: 'API da plataforma de doações da Fundação Hubble',
     },
-    servers: [{ url: `http://localhost:${env.PORT}` }],
+    servers: [{ url: env.BACKEND_PUBLIC_URL }],
     components: {
       securitySchemes: {
         bearerAuth: { type: 'http', scheme: 'bearer', bearerFormat: 'JWT' },
@@ -34,7 +34,19 @@ const allowedOrigins = env.CORS_ALLOWED_ORIGINS.split(',')
   .filter(Boolean);
 
 app.use(helmet());
-app.use(cors({ origin: allowedOrigins, credentials: true }));
+app.use(
+  cors({
+    origin(origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+        return;
+      }
+
+      callback(new Error(`CORS bloqueado para a origem: ${origin}`));
+    },
+    credentials: true,
+  })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
