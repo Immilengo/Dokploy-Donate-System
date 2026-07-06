@@ -2,13 +2,14 @@ FROM node:22-alpine
 
 WORKDIR /app
 
+ENV npm_config_fetch_retries=5 \
+  npm_config_fetch_retry_factor=10 \
+  npm_config_fetch_retry_mintimeout=20000 \
+  npm_config_fetch_retry_maxtimeout=120000 \
+  npm_config_fetch_timeout=600000
+
 COPY package*.json ./
-RUN npm config set fetch-retries 5 \
-  && npm config set fetch-retry-factor 10 \
-  && npm config set fetch-retry-mintimeout 20000 \
-  && npm config set fetch-retry-maxtimeout 120000 \
-  && npm config set network-timeout 600000 \
-  && npm ci --prefer-offline --no-audit --no-fund
+RUN npm ci --prefer-offline --no-audit --no-fund
 
 COPY . .
 ARG NEXT_PUBLIC_API_URL

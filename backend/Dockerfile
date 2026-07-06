@@ -5,13 +5,14 @@ WORKDIR /app
 RUN apk add --no-cache python3 make g++ \
   && ln -sf /usr/bin/python3 /usr/bin/python
 
+ENV npm_config_fetch_retries=5 \
+  npm_config_fetch_retry_factor=10 \
+  npm_config_fetch_retry_mintimeout=20000 \
+  npm_config_fetch_retry_maxtimeout=120000 \
+  npm_config_fetch_timeout=600000
+
 COPY package*.json ./
-RUN npm config set fetch-retries 5 \
-  && npm config set fetch-retry-factor 10 \
-  && npm config set fetch-retry-mintimeout 20000 \
-  && npm config set fetch-retry-maxtimeout 120000 \
-  && npm config set network-timeout 600000 \
-  && npm ci --prefer-offline --no-audit --no-fund
+RUN npm ci --prefer-offline --no-audit --no-fund
 
 COPY prisma ./prisma
 COPY prisma.config.ts ./
