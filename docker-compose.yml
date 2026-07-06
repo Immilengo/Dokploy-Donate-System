@@ -25,6 +25,7 @@ services:
     environment:
       NODE_ENV: ${NODE_ENV:-production}
       PORT: ${BACKEND_PORT:-5050}
+      BACKEND_PUBLIC_URL: ${BACKEND_PUBLIC_URL:-http://10.0.0.4:5050}
       DATABASE_URL: ${DATABASE_URL}
       JWT_SECRET: ${JWT_SECRET}
       JWT_EXPIRES_IN: ${JWT_EXPIRES_IN:-7d}
