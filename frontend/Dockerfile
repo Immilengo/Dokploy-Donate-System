@@ -12,7 +12,7 @@ COPY package*.json ./
 RUN npm ci --prefer-offline --no-audit --no-fund
 
 COPY . .
-ARG NEXT_PUBLIC_API_URL
+ARG NEXT_PUBLIC_API_URL=http://10.0.0.4:5050
 ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
 RUN npm run build
 

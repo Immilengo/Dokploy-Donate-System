@@ -1,7 +1,8 @@
 process.env.NODE_ENV = 'test';
 process.env.PORT = '5050';
 process.env.BACKEND_PUBLIC_URL = 'http://10.0.0.4:5050';
-process.env.DATABASE_URL = 'postgresql://postgres:postgres@10.0.0.4:5432/banco_doacoes?schema=public';
+process.env.DATABASE_URL =
+  process.env.DATABASE_URL || 'postgresql://postgres:postgres@127.0.0.1:5432/banco_doacoes?schema=public';
 process.env.JWT_SECRET = 'test-secret-key-test-secret-key';
 process.env.JWT_REFRESH_SECRET = 'test-refresh-secret-key-test-refresh';
 process.env.JWT_EMAIL_SECRET = 'test-email-secret-key-test-email';

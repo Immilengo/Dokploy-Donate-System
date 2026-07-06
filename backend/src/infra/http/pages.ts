@@ -1,3 +1,5 @@
+const FRONTEND_URL = process.env.FRONTEND_URL || 'http://10.0.0.4:5051';
+
 export const verifiedPage = (fullName: string) => `
 <!DOCTYPE html>
 <html lang="pt">
@@ -49,7 +51,7 @@ export const verifiedPage = (fullName: string) => `
     <p>Olá, <span class="name">${fullName}</span>!</p>
     <p>A tua conta na <strong>Fundação Hubble</strong> foi activada com sucesso.</p>
     <p>Já podes fazer login e começar a fazer doações. 💙</p>
-    <a href="${process.env.FRONTEND_URL ?? 'http://10.0.0.4:5051'}/auth/login" class="btn">
+    <a href="${FRONTEND_URL}/auth/login" class="btn">
       Ir para o Login
     </a>
     <div class="footer">Fundação Hubble &mdash; Juntos fazemos a diferença</div>
@@ -106,7 +108,7 @@ export const alreadyVerifiedPage = () => `
     <h1>Email já verificado</h1>
     <p>Este email já foi verificado anteriormente.</p>
     <p>Podes fazer login normalmente.</p>
-    <a href="${process.env.FRONTEND_URL ?? 'http://10.0.0.4:5051'}/auth/login" class="btn">
+    <a href="${FRONTEND_URL}/auth/login" class="btn">
       Ir para o Login
     </a>
     <div class="footer">Fundação Hubble &mdash; Juntos fazemos a diferença</div>
@@ -162,7 +164,7 @@ export const invalidTokenPage = (message: string) => `
     <div class="icon">❌</div>
     <h1>Link Inválido</h1>
     <p>${message}</p>
-    <a href="${process.env.FRONTEND_URL ?? 'http://10.0.0.4:5051'}/auth/login" class="btn">
+    <a href="${FRONTEND_URL}/auth/login" class="btn">
       Voltar ao Login
     </a>
     <div class="footer">Fundação Hubble &mdash; Juntos fazemos a diferença</div>
@@ -349,7 +351,7 @@ export const resetSuccessPage = () => `
     <h1>Palavra-passe Redefinida!</h1>
     <p>A tua palavra-passe foi alterada com sucesso.</p>
     <p>Já podes fazer login com a nova palavra-passe.</p>
-    <a href="${process.env.FRONTEND_URL ?? 'http://10.0.0.4:5051'}/auth/login" class="btn">
+    <a href="${FRONTEND_URL}/auth/login" class="btn">
       Ir para o Login
     </a>
     <div class="footer">Fundação Hubble &mdash; Juntos fazemos a diferença</div>

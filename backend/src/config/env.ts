@@ -20,7 +20,7 @@ const schema = z.object({
   GOOGLE_CLIENT_SECRET: z.string().optional(),
   GOOGLE_CALLBACK_URL: z.string().optional(),
   FRONTEND_URL: z.string().default('http://10.0.0.4:5051'),
-  CORS_ALLOWED_ORIGINS: z.string().default('http://10.0.0.4:5051'),
+  CORS_ALLOWED_ORIGINS: z.string().default('http://10.0.0.4:5051,http://10.0.0.4:5050'),
   MAIL_HOST: z.string().default('smtp.gmail.com'),
   MAIL_PORT: z.coerce.number().default(587),
   MAIL_USER: z.string().default('change_me@example.com'),
