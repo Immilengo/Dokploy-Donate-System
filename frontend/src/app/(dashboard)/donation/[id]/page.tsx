@@ -21,6 +21,7 @@ import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToastHandler } from '@/hooks/use-toast-handler';
+import { getErrorMessage } from '@/lib/error';
 import { Loader2, MapPin, HeartHandshake, Upload } from 'lucide-react';
 
 const STATUS_ORDER: DonationStatus[] = ['PENDING', 'APPROVED', 'RECEIVED', 'IN_DELIVERY', 'DONATED'];
@@ -79,8 +80,8 @@ export default function DonationDetailPage() {
       toast.success('Imagem enviada com sucesso');
       setDeliveryImageFile(null);
       await load();
-    } catch (err: any) {
-      toast.error(err?.response?.data?.message ?? 'Erro ao enviar imagem');
+    } catch (err: unknown) {
+      toast.error(getErrorMessage(err, 'Erro ao enviar imagem'));
     } finally {
       setUploadingImage(false);
     }
@@ -108,8 +109,8 @@ export default function DonationDetailPage() {
       setNextStatus('');
       setCustomMessage('');
       await load();
-    } catch (err: any) {
-      toast.error(err?.response?.data?.message ?? 'Erro ao actualizar status');
+    } catch (err: unknown) {
+      toast.error(getErrorMessage(err, 'Erro ao actualizar status'));
     } finally {
       setSubmitting(false);
     }

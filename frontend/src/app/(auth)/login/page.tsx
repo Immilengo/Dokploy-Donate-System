@@ -8,6 +8,7 @@ import { useAuthStore } from '@/store/auth.store';
 import { Button } from '@/components/ui/button';
 import { GoogleButton } from '@/components/auth/google-button';
 import { Eye, EyeOff, Loader2 } from 'lucide-react';
+import { getErrorMessage } from '@/lib/error';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -41,8 +42,8 @@ export default function LoginPage() {
       const { user, accessToken, refreshToken } = res.data;
       setAuth(user, accessToken, refreshToken);
       router.push(user.role === 'ADMIN' ? '/dashboard' : '/donation');
-    } catch (err: any) {
-      setError(err?.response?.data?.message ?? 'Erro ao iniciar sessão');
+    } catch (err: unknown) {
+      setError(getErrorMessage(err, 'Erro ao iniciar sessão'));
     } finally {
       setLoading(false);
     }

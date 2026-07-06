@@ -1,5 +1,5 @@
 import { prisma } from '@infra/database/prisma';
-import { Prisma } from '@prisma/client';
+import { Prisma, RecordStatus } from '@prisma/client';
 
 export class UserRepository {
   async findById(id: string) {
@@ -52,7 +52,7 @@ export class UserRepository {
       data: {
         deleted: true,
         deletedAt: new Date(),
-        recordStatus: 'DELETED' as any,
+        recordStatus: 'DELETED' as RecordStatus,
       },
     });
   }

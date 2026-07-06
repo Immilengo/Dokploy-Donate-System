@@ -1,5 +1,5 @@
 import { prisma } from '@infra/database/prisma';
-import { Prisma } from '@prisma/client';
+import { Prisma, RecordStatus } from '@prisma/client';
 
 export class CollectionPointRepository {
   async create(data: Prisma.CollectionPointCreateInput) {
@@ -57,7 +57,7 @@ export class CollectionPointRepository {
       data: {
         deleted: true,
         deletedAt: new Date(),
-        recordStatus: 'DELETED' as any,
+        recordStatus: 'DELETED' as RecordStatus,
       },
     });
   }

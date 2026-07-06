@@ -2,7 +2,7 @@ FROM node:22-alpine
 
 WORKDIR /app
 
-RUN apk add --no-cache python3 make g++ \
+RUN apk add --no-cache python3 make g++ openssl \
   && ln -sf /usr/bin/python3 /usr/bin/python
 
 ENV npm_config_fetch_retries=5 \

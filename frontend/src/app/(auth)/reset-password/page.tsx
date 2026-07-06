@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Eye, EyeOff, Loader2, CheckCircle2 } from 'lucide-react';
+import { getErrorMessage } from '@/lib/error';
 
 function ResetPasswordInner() {
   const router = useRouter();
@@ -45,8 +46,10 @@ function ResetPasswordInner() {
     try {
       await authService.resetPassword({ token, password });
       setDone(true);
-    } catch (err: any) {
-      setError(err?.response?.data?.message ?? 'Não foi possível redefinir a palavra-passe. O link pode ter expirado.');
+    } catch (err: unknown) {
+      setError(
+        getErrorMessage(err, 'Não foi possível redefinir a palavra-passe. O link pode ter expirado.')
+      );
     } finally {
       setLoading(false);
     }

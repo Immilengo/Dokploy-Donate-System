@@ -16,6 +16,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { getErrorMessage } from '@/lib/error';
 import {
   Dialog,
   DialogContent,
@@ -113,8 +114,8 @@ function UsersPageInner() {
       toast.success('Utilizador actualizado');
       setEditing(null);
       await load();
-    } catch (err: any) {
-      setFormError(err?.response?.data?.message ?? 'Erro ao actualizar utilizador');
+    } catch (err: unknown) {
+      setFormError(getErrorMessage(err, 'Erro ao actualizar utilizador'));
     } finally {
       setSaving(false);
     }
@@ -127,8 +128,8 @@ function UsersPageInner() {
       });
       toast.success(u.recordStatus === 'ACTIVE' ? 'Utilizador desactivado' : 'Utilizador activado');
       await load();
-    } catch (err: any) {
-      toast.error(err?.response?.data?.message ?? 'Erro ao actualizar status');
+    } catch (err: unknown) {
+      toast.error(getErrorMessage(err, 'Erro ao actualizar status'));
     }
   };
 
@@ -140,8 +141,8 @@ function UsersPageInner() {
       toast.success('Utilizador eliminado');
       setDeleteTarget(null);
       await load();
-    } catch (err: any) {
-      toast.error(err?.response?.data?.message ?? 'Erro ao eliminar utilizador');
+    } catch (err: unknown) {
+      toast.error(getErrorMessage(err, 'Erro ao eliminar utilizador'));
     } finally {
       setDeleting(false);
     }

@@ -1,5 +1,5 @@
 import { prisma } from '@infra/database/prisma';
-import { Prisma, DonationStatus } from '@prisma/client';
+import { Prisma, DonationCategory, DonationStatus, RecordStatus } from '@prisma/client';
 
 export class DonationRepository {
   private readonly include = {
@@ -29,7 +29,7 @@ export class DonationRepository {
       ...(params.userId ? { userId: params.userId } : {}),
       ...(params.collectionPointId ? { collectionPointId: params.collectionPointId } : {}),
       ...(params.donationStatus ? { donationStatus: params.donationStatus } : {}),
-      ...(params.category ? { category: params.category as any } : {}),
+      ...(params.category ? { category: params.category as DonationCategory } : {}),
       ...(params.recordStatus && params.recordStatus !== 'ALL'
         ? { recordStatus: params.recordStatus }
         : {}),
@@ -59,7 +59,7 @@ export class DonationRepository {
       data: {
         deleted: true,
         deletedAt: new Date(),
-        recordStatus: 'DELETED' as any,
+        recordStatus: 'DELETED' as RecordStatus,
       },
     });
   }

@@ -33,7 +33,7 @@ export class AuthController {
     res.json(successResponse('Utilizador autenticado', data));
   }
 
-    async verifyEmail(req: Request, res: Response) {
+  async verifyEmail(req: Request, res: Response) {
     const { token } = req.query as { token: string };
     if (!token) {
       return res.status(400).send(invalidTokenPage('Token não fornecido.'));
@@ -84,20 +84,19 @@ export class AuthController {
       }
 
       return res.json(successResponse(data.message));
-    } catch (error: any) {
+    } catch (error: unknown) {
       const contentTypeHeader = req.headers['content-type'];
       const wantsHtml = req.headers.accept?.includes('text/html') ||
         (typeof contentTypeHeader === 'string' && contentTypeHeader.includes('application/x-www-form-urlencoded'));
 
       if (wantsHtml) {
-        const message = error?.message ?? 'Erro ao redefinir palavra-passe.';
+        const message = error instanceof Error ? error.message : 'Erro ao redefinir palavra-passe.';
         return res.status(error instanceof AppError ? error.statusCode : 400).send(invalidTokenPage(message));
       }
 
       throw error;
     }
   }
-
 
   // nova página de reset — GET que serve o formulário HTML
   resetPasswordPage(req: Request, res: Response) {
@@ -109,9 +108,13 @@ export class AuthController {
   }
   // Google OAuth — redireciona para o Google
   googleRedirect(_req: Request, res: Response) {
+    if (!env.GOOGLE_CLIENT_ID || !env.GOOGLE_CALLBACK_URL) {
+      return res.redirect(`${env.FRONTEND_URL}/auth/login?error=google_failed`);
+    }
+
     const params = new URLSearchParams({
-      client_id: env.GOOGLE_CLIENT_ID ?? '',
-      redirect_uri: env.GOOGLE_CALLBACK_URL ?? '',
+      client_id: env.GOOGLE_CLIENT_ID,
+      redirect_uri: env.GOOGLE_CALLBACK_URL,
       response_type: 'code',
       scope: 'openid email profile',
       access_type: 'offline',
@@ -127,15 +130,19 @@ export class AuthController {
       return res.redirect(`${env.FRONTEND_URL}/auth/login?error=google_failed`);
     }
 
+    if (!env.GOOGLE_CLIENT_ID || !env.GOOGLE_CLIENT_SECRET || !env.GOOGLE_CALLBACK_URL) {
+      return res.redirect(`${env.FRONTEND_URL}/auth/login?error=google_failed`);
+    }
+
     // troca o code por tokens do Google
     const tokenRes = await fetch('https://oauth2.googleapis.com/token', {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: new URLSearchParams({
         code,
-        client_id: env.GOOGLE_CLIENT_ID ?? '',
-        client_secret: env.GOOGLE_CLIENT_SECRET ?? '',
-        redirect_uri: env.GOOGLE_CALLBACK_URL ?? '',
+        client_id: env.GOOGLE_CLIENT_ID,
+        client_secret: env.GOOGLE_CLIENT_SECRET,
+        redirect_uri: env.GOOGLE_CALLBACK_URL,
         grant_type: 'authorization_code',
       }),
     });

@@ -36,6 +36,12 @@ const STATUS_CHART_COLORS: Record<string, string> = {
 const GRID_COLOR = '#e5e7eb';
 const PRIMARY_COLOR = '#171717';
 
+type StatusTooltipItem = {
+  payload?: {
+    status: keyof typeof STATUS_CHART_COLORS;
+  };
+};
+
 function StatCard({ icon: Icon, label, value }: { icon: LucideIcon; label: string; value: number }) {
   return (
     <div className="rounded-2xl border border-border bg-background p-5">
@@ -109,9 +115,9 @@ function DashboardPageInner() {
                   ))}
                 </Pie>
                 <Tooltip
-                  formatter={(value, _name, item: any) => [
+                  formatter={(value, _name, item: StatusTooltipItem) => [
                     Number(value ?? 0),
-                    DONATION_STATUS_LABELS[item.payload.status],
+                    DONATION_STATUS_LABELS[item.payload?.status ?? 'PENDING'],
                   ]}
                 />
               </PieChart>

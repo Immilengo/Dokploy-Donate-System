@@ -14,6 +14,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToastHandler } from '@/hooks/use-toast-handler';
+import { getErrorMessage } from '@/lib/error';
 import { Loader2 } from 'lucide-react';
 
 const CATEGORY_OPTIONS: DonationCategory[] = ['CLOTHING', 'FOOTWEAR', 'BLANKETS', 'TOYS', 'BOOKS', 'OTHER'];
@@ -64,8 +65,8 @@ export default function NewDonationPage() {
       });
       toast.success('Doação criada! Aguarda a aprovação da fundação.');
       router.push(`/donation/${res.data.id}`);
-    } catch (err: any) {
-      setError(err?.response?.data?.message ?? 'Erro ao criar doação');
+    } catch (err: unknown) {
+      setError(getErrorMessage(err, 'Erro ao criar doação'));
     } finally {
       setSubmitting(false);
     }

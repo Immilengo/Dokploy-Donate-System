@@ -14,6 +14,7 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { useToastHandler } from '@/hooks/use-toast-handler';
+import { getErrorMessage } from '@/lib/error';
 import { LogOut, Mail, KeyRound, Loader2, HeartHandshake } from 'lucide-react';
 
 export default function ProfilePage() {
@@ -64,8 +65,8 @@ export default function ProfilePage() {
       const res = await userService.updateMe({ fullName: fullName.trim(), phone: phone.trim() || undefined });
       setMe(res.data);
       toast.success('Perfil actualizado com sucesso');
-    } catch (err: any) {
-      setError(err?.response?.data?.message ?? 'Erro ao actualizar perfil');
+    } catch (err: unknown) {
+      setError(getErrorMessage(err, 'Erro ao actualizar perfil'));
     } finally {
       setSaving(false);
     }

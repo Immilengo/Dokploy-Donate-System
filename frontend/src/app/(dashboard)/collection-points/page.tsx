@@ -25,6 +25,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { useToastHandler } from '@/hooks/use-toast-handler';
+import { getErrorMessage } from '@/lib/error';
 import { MapPin, Plus, Pencil, Trash2, Power, Loader2 } from 'lucide-react';
 
 const RECORD_STATUS_COLORS: Record<string, string> = {
@@ -127,8 +128,8 @@ function CollectionPointsPageInner() {
 
       setDialogOpen(false);
       await load();
-    } catch (err: any) {
-      setFormError(err?.response?.data?.message ?? 'Erro ao guardar ponto de recolha');
+    } catch (err: unknown) {
+      setFormError(getErrorMessage(err, 'Erro ao guardar ponto de recolha'));
     } finally {
       setSaving(false);
     }
@@ -141,8 +142,8 @@ function CollectionPointsPageInner() {
       });
       toast.success(p.recordStatus === 'ACTIVE' ? 'Ponto desactivado' : 'Ponto activado');
       await load();
-    } catch (err: any) {
-      toast.error(err?.response?.data?.message ?? 'Erro ao actualizar status');
+    } catch (err: unknown) {
+      toast.error(getErrorMessage(err, 'Erro ao actualizar status'));
     }
   };
 
@@ -154,8 +155,8 @@ function CollectionPointsPageInner() {
       toast.success('Ponto de recolha eliminado');
       setDeleteTarget(null);
       await load();
-    } catch (err: any) {
-      toast.error(err?.response?.data?.message ?? 'Erro ao eliminar');
+    } catch (err: unknown) {
+      toast.error(getErrorMessage(err, 'Erro ao eliminar'));
     } finally {
       setDeleting(false);
     }
