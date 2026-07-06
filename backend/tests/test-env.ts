@@ -1,0 +1,13 @@
+process.env.NODE_ENV = 'test';
+process.env.PORT = '3001';
+process.env.DATABASE_URL = 'postgresql://postgres:postgres@localhost:1234/banco_doacoes?schema=public';
+process.env.JWT_SECRET = 'test-secret-key-test-secret-key';
+process.env.JWT_REFRESH_SECRET = 'test-refresh-secret-key-test-refresh';
+process.env.JWT_EMAIL_SECRET = 'test-email-secret-key-test-email';
+process.env.JWT_RESET_SECRET = 'test-reset-secret-key-test-reset';
+process.env.MAIL_HOST = 'localhost';
+process.env.MAIL_USER = 'test';
+process.env.MAIL_PASSWORD = 'test';
+process.env.MAIL_FROM = 'test@example.com';
+process.env.FRONTEND_URL = 'http://localhost:3000';
+process.env.CORS_ALLOWED_ORIGINS = 'http://localhost:3000';
