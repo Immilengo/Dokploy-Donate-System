@@ -14,6 +14,7 @@ ENV npm_config_fetch_retries=5 \
 COPY package*.json ./
 RUN npm ci --prefer-offline --no-audit --no-fund
 
+COPY tsconfig.json ./
 COPY prisma ./prisma
 COPY prisma.config.ts ./
 COPY src ./src
