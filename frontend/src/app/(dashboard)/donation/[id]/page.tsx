@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState, useCallback } from 'react';
+import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
 import { useAuth } from '@/hooks/use-auth';
 import { donationService } from '@/services/donations.service';
@@ -204,10 +205,13 @@ export default function DonationDetailPage() {
           <HeartHandshake className="mx-auto h-8 w-8 text-primary" />
           <p className="mt-3 text-sm font-medium text-foreground">{donation.thankYouMessage}</p>
           {deliveryImageUrl && (
-            <img
+            <Image
               src={deliveryImageUrl}
               alt="Entrega da doação"
-              className="mx-auto mt-4 max-h-80 rounded-xl border border-border object-cover"
+              width={960}
+              height={720}
+              unoptimized
+              className="mx-auto mt-4 h-auto max-h-80 w-auto rounded-xl border border-border object-cover"
             />
           )}
         </div>
