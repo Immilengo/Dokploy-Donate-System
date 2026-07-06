@@ -1,16 +1,11 @@
-import test, { after, beforeEach } from 'node:test';
+import test, { beforeEach } from 'node:test';
 import assert from 'node:assert/strict';
-import { cleanDatabase, createUser } from './helpers';
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const { prisma } = require('../src/infra/database/prisma');
+import { createTestContext } from './helpers';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { DonationService } = require('../src/modules/donations/service/donation.service');
 
-const service = new DonationService();
-
-after(async () => {
-  await prisma.$disconnect();
-});
+const { donationRepository, collectionPointRepository, cleanDatabase, createUser, createCollectionPoint } = createTestContext();
+const service = new DonationService(donationRepository as any, collectionPointRepository as any);
 
 beforeEach(async () => {
   await cleanDatabase();
@@ -22,13 +17,10 @@ test('utilizador autenticado cria doação e a consulta no histórico', async ()
     email: 'doador@exemplo.com',
     password: 'Senha1234',
   });
-  const point = await prisma.collectionPoint.create({
-    data: {
-      name: 'Ponto',
-      address: 'Rua Principal',
-      city: 'Luanda',
-      recordStatus: 'ACTIVE',
-    },
+  const point = await createCollectionPoint({
+    name: 'Ponto',
+    address: 'Rua Principal',
+    city: 'Luanda',
   });
 
   const donation = await service.create(user.id, {
@@ -50,13 +42,10 @@ test('admin atualiza status da doação e adiciona imagem de entrega', async () 
     email: 'final@exemplo.com',
     password: 'Senha1234',
   });
-  const point = await prisma.collectionPoint.create({
-    data: {
-      name: 'Ponto 2',
-      address: 'Rua 2',
-      city: 'Huambo',
-      recordStatus: 'ACTIVE',
-    },
+  const point = await createCollectionPoint({
+    name: 'Ponto 2',
+    address: 'Rua 2',
+    city: 'Huambo',
   });
   const donation = await service.create(user.id, {
     collectionPointId: point.id,
@@ -81,13 +70,10 @@ test('uploadDeliveryImage grava a URL pública da imagem', async () => {
     email: 'imagem@exemplo.com',
     password: 'Senha1234',
   });
-  const point = await prisma.collectionPoint.create({
-    data: {
-      name: 'Ponto 3',
-      address: 'Rua 3',
-      city: 'Benguela',
-      recordStatus: 'ACTIVE',
-    },
+  const point = await createCollectionPoint({
+    name: 'Ponto 3',
+    address: 'Rua 3',
+    city: 'Benguela',
   });
   const donation = await service.create(user.id, {
     collectionPointId: point.id,

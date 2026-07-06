@@ -1,8 +1,6 @@
-import test, { after, beforeEach } from 'node:test';
+import test, { beforeEach } from 'node:test';
 import assert from 'node:assert/strict';
-import { cleanDatabase, createUser, makeReq, makeRes } from './helpers';
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const { prisma } = require('../src/infra/database/prisma');
+import { createTestContext, makeReq, makeRes } from './helpers';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { roleMiddleware } = require('../src/middlewares/roles.middleware');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -10,12 +8,9 @@ const { UserService } = require('../src/modules/users/service/user.service');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { CollectionPointService } = require('../src/modules/collection-points/service/collection-point.service');
 
-const userService = new UserService();
-const collectionPointService = new CollectionPointService();
-
-after(async () => {
-  await prisma.$disconnect();
-});
+const { userRepository, collectionPointRepository, cleanDatabase, createUser } = createTestContext();
+const userService = new UserService(userRepository as any);
+const collectionPointService = new CollectionPointService(collectionPointRepository as any);
 
 beforeEach(async () => {
   await cleanDatabase();

@@ -1,8 +1,6 @@
-import test, { after, beforeEach } from 'node:test';
+import test, { beforeEach } from 'node:test';
 import assert from 'node:assert/strict';
-import { cleanDatabase, createUser, makeReq, makeRes } from './helpers';
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const { prisma } = require('../src/infra/database/prisma');
+import { createTestContext, makeReq, makeRes } from './helpers';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { AuthService } = require('../src/modules/auth/service/auth.service');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -12,11 +10,8 @@ const jwt = require('jsonwebtoken');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { env } = require('../src/config/env');
 
-const service = new AuthService();
-
-after(async () => {
-  await prisma.$disconnect();
-});
+const { authRepository, cleanDatabase, createUser } = createTestContext();
+const service = new AuthService(authRepository as any);
 
 beforeEach(async () => {
   await cleanDatabase();
@@ -30,7 +25,7 @@ test('cadastro cria conta com role USER', async () => {
   });
 
   assert.match(result.message, /Conta criada/i);
-  const user = await prisma.user.findUnique({ where: { email: 'novo@exemplo.com' } });
+  const user = await authRepository.findByEmail('novo@exemplo.com');
   assert.equal(user?.role, 'USER');
 });
 
@@ -59,11 +54,11 @@ test('forgot-password e reset-password funcionam no fluxo completo', async () =>
   const forgot = await service.forgotPassword(user.email);
   assert.match(forgot.message, /Se o email existir/i);
 
-  const refreshed = await prisma.user.findUnique({ where: { id: user.id } });
+  const refreshed = await authRepository.findById(user.id);
   assert.ok(refreshed?.resetPasswordToken);
 
   const reset = await service.resetPassword(refreshed!.resetPasswordToken!, 'NovaSenha123');
-  assert.match(reset.message, /redefinir/i);
+  assert.match(reset.message, /redefinid/i);
 
   const relogin = await service.login({ email: user.email, password: 'NovaSenha123' });
   assert.ok(relogin.accessToken);
